@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: development
+logging:
+  level:
+    root: INFO
+    org.springframework.*: INFO
+    org.hibernate.SQL: debug 
+---
+spring:
+  profiles: development
+  datasource:
+    username: root
+    password: sasa
+    url: jdbc:mysql://localhost/db_app_print?serverTimezone=America/Mexico_City&useSSL=false&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create-drop
+    generate-ddl: true
+  h2:
+    console:
+      enabled: true
+server:
+  port: 8080
