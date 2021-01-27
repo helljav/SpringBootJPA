@@ -88,7 +88,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		// TODO Auto-generated method stub
 		//Primero rutas publicas y despues estan las privadas
-		http.authorizeRequests().antMatchers("/","/css/**","/js/**","/image/**","/home**","/locale","/api/clientes**").permitAll()
+		http.authorizeRequests().antMatchers("/","/css/**","/js/**","/image/**","/home**","/nuevoUsuario**","/locale","/api/clientes**").permitAll()
 		//Estas son las rutas privadas, pero estan comentadas porque ahora las controlamos en los controladores a base de anotaciones 
 		//.antMatchers("/ver/**").hasAnyRole("USER")
 		//.antMatchers("/uploads/**").hasAnyRole("USER")

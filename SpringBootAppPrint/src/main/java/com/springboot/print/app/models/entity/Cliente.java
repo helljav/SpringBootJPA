@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,11 +15,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UniqueElements;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -62,19 +68,24 @@ public class Cliente {
 	@ApiModelProperty(notes="Identificador unico")  //Aparecen en la descripcion de parametros de swagger como un requisito para utilizarlo por metodos CRUD
 	private Long id;	
 	
-	
+	@Column(length=10)
 	@ApiModelProperty(notes="Matricula del usuario")  //Aparecen en la descripcion de parametros de swagger como un requisito para utilizarlo por metodos CRUD
 	private String matricula;
+	
 	
 	@NotEmpty
 	@Email
 	@ApiModelProperty(notes="Email del usuario", required = true)
+	@Column(unique=true)
 	private String email;
 	
 	@NotEmpty
+	@Column(unique=true)
 	@ApiModelProperty(notes="Nombre_Cuenta_Usuario del usuario", required=true)
 	private String username;
 	
+	
+	@Length(min=5)
 	@NotBlank
 	@ApiModelProperty(notes="Contraseña_Cuenta_Usuario del usuario", required=true)
 	private String password;

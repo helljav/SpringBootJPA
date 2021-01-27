@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container py-4 my-5">
+		<div class="d-flex flex-column justify-content-center col-sm-12 col-md-6  px-0 card  h-100 m-auto ">
+			
+			<div class="d-flex flex-column card-body">
+			<h5 class="display-4 card-title m-auto">Crea una cuenta nueva</h5>
+
+				<!--  <div th:object="${cliente}" th:remove="tag" class="">
+					<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+						<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
+
+					</ul>
+				</div> -->
+
+				<!-- Hacemos referencia al objeto que se esta agregando en el model -->
+				<form th:action="@{/nuevoUsuario}" th:object="${cliente}" method="post" enctype="multipart/form-data">
+
+					<div class="form-group">
+						<label class="col-form-label">Matricula</label>
+						<div class="">
+							<input type="text" th:field="*{matricula}" class="form-control"
+								th:errorClass="'form-control alert-danger'" maxlength="10" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('matricula')}" th:errors="*{matricula}"></small>
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label class=" col-form-label">E-mail</label>
+						<div class="">
+							<input type="email" th:field="*{email}" class="form-control" maxlength="50"
+								th:errorClass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+						</div>
+
+					</div>
+
+
+					<div class="form-group">
+						<label class=" col-form-label">Nombre de usuario</label>
+						<div class="">
+							<input  type="text"  th:field="*{username}" class="form-control" maxlength="20"
+								th:errorClass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+						</div>
+
+					</div>
+
+
+					<div class="form-group">
+
+						<label class=" col-form-label">Contraseña</label>
+						<div class="">
+							<input type="password" class="form-control" th:field="*{password}" minlength ="5" maxlength="10"/>
+							<small class="form-text text-danger"
+								th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+						</div>
+
+					</div>
+					
+					<div class="form-group">
+						<label for="file" class="col-sm-2 col-form-label">Foto</label>
+						<div class="">
+						<input type="file" name="file" class="form-control"/>
+						</div>
+					</div>
+
+
+					<input type="submit" value="Crear cuenta" class="w-100 btn btn-lg btn-secondary" />
+
+					<input type="hidden" th:field="*{id}" />
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+	<footer th:replace="layout/layout :: footer" class="footer"></footer>
+</body>
+</html>

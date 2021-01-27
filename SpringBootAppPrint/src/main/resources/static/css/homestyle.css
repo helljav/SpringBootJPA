@@ -1,0 +1,21 @@
+.slider{
+    background: url("../image/comic.jpg");
+    height: 100vh;
+    background-size: cover;
+    background-position: cover;
+}
+.slogan{
+	font-family: 'Cinzel', serif;
+}
+.card:hover {
+  -webkit-box-shadow: 0 0 10px #0c0c0c3b;
+          box-shadow: 0 0 10px #0c0c0c3b; 
+}
+@media (max-width: 768px) {
+  .regular{
+  	width: 50%;
+  	margin:auto;
+  }
+}
+
+

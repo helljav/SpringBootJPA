@@ -30,18 +30,57 @@ public class JpaUserDetailsService implements UserDetailsService{
 	@Autowired
 	private IClienteDao usuarioDao;
 	
+	
+	
+	
 
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		
 		//Buscamos al usuario por su nobre de usuario
-		Cliente cliente = usuarioDao.findByUsername(username);
+		//Cliente cliente = usuarioDao.findByUsername(username);
+		
+		List<Cliente> cliente = usuarioDao.findByEmail(username);
 		
 		//Si no se encuentra informamos de ello
-		if (cliente == null) {
+		if (cliente.size() == 0 ) {
+			//Buscamos al usuario por su nobre de usuario
+			Cliente clienteUser = usuarioDao.findByUsername(username);
 			
-			log.info("Error login: no existe el usuario");
-			throw new UsernameNotFoundException("El usuario no existe en el sistema");
+			
+			
+			//Si no se encuentra informamos de ello
+			if (clienteUser == null) {
+				
+				log.info("Error login: no existe el usuario");
+				throw new UsernameNotFoundException("El usuario no existe en el sistema");
+				
+			}
+			
+			
+			//Interfaz de Spring scurity para asignar los roles de los usuarios
+			//Creamos una lista que contendran los roles del usuario encontrado con ayuda de Spring security
+			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+			
+			//Se llena la lista con un foreach
+			for(com.springboot.print.app.models.entity.Role role: clienteUser.getRoles()) {
+				//Un for por cada rol del usuario, creando la instancia completa de authorities recordando que Granted es una interfaz
+				authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
+			}
+			
+			
+			//Si no se encontraron roles se manda a informar
+			if(authorities.isEmpty()) {
+				log.info("Error en el login: El usuario no tiene roles asignados");
+			}		
+			
+			
+			return new User(clienteUser.getUsername(), clienteUser.getPassword(), clienteUser.getEnabled(), true, true, true, authorities);
+			
+//			log.info("Error login: no existe el usuario");
+//			throw new UsernameNotFoundException("El usuario no existe en el sistema");
 			
 		}
 		
@@ -51,7 +90,7 @@ public class JpaUserDetailsService implements UserDetailsService{
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		
 		//Se llena la lista con un foreach
-		for(com.springboot.print.app.models.entity.Role role: cliente.getRoles()) {
+		for(com.springboot.print.app.models.entity.Role role: cliente.get(0).getRoles()) {
 			//Un for por cada rol del usuario, creando la instancia completa de authorities recordando que Granted es una interfaz
 			authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
 		}
@@ -60,12 +99,10 @@ public class JpaUserDetailsService implements UserDetailsService{
 		//Si no se encontraron roles se manda a informar
 		if(authorities.isEmpty()) {
 			log.info("Error en el login: El usuario no tiene roles asignados");
-		}
+		}		
 		
 		
-		
-		
-		return new User(cliente.getUsername(), cliente.getPassword(), cliente.getEnabled(), true, true, true, authorities);
+		return new User(cliente.get(0).getUsername(), cliente.get(0).getPassword(), cliente.get(0).getEnabled(), true, true, true, authorities);
 	}
 
 }
