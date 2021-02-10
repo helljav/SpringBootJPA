@@ -1,0 +1,38 @@
+label.titulo-pedido{
+	position:absolute;
+	margin: 0% 10% 0% 0%;
+	padding: 0% 10%;
+	border-radius: 30px;
+	border-color:#ABABAB;
+	border-style:solid;
+	width: 50%;
+	color:white;
+}
+.impersionType-container{
+	
+	padding: 3% 5%;
+	border-radius: 30px;
+	border-color:#ABABAB;
+	border-style:solid;
+	
+}
+.textField{
+	width: 40%;	
+}
+
+.metodoPago{
+	background-color:#FFD60A;
+	border:#000000;
+	border-style: solid;
+	border-radius: 20px;
+	margin: 0% 4%;
+	padding: 8px 20px;
+	width: 25%;
+}
+.metodoPago:hover{
+	background-color:#E3A30D;	
+}
+#comentario{
+	width:50%;
+	padding:0% 0% 10% 0%;
+}

@@ -40,4 +40,10 @@ public class IClienteServiceImpl implements IClienteService {
 		clienteDao.deleteById(id);
 	}
 
+	@Override
+	public Cliente findByusername(String username) {
+		// TODO Auto-generated method stub
+		return clienteDao.findByUsername(username);
+	}
+
 }

@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@Qualifier("Documentos")
 public class IDocumenstServiceImpl implements IUploadFileService{
 	
-	private final static String DOCUMENTS_FOLDER = "uploads";
+	private final static String DOCUMENTS_FOLDER = "documentos";
 
 
 	@Override

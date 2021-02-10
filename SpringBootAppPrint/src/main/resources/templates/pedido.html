@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+	
+</head>
+<head>
+	<link rel="stylesheet"  th:href="@{/css/pedido.css}">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<section class="hacerPedido mt-5 py-4">
+		<div class="container">
+			<h1>Realiza solicitud de impresión</h1>
+			<div class="row d-felx">
+				
+				<form th:action="@{/crearPedido}" th:object="${pedido}"  id="form-pedido" method="post"  enctype="multipart/form-data" class="d-flex flex-column w-100">
+				
+					<div class="form-group d-flex flex-column w-100">
+						<label class="bg-primary text-center titulo-pedido">Tipo de impresión</label>
+						<div class="impersionType-container pt-5 w-100">
+							<input type=radio th:field="*{tipoImpresion}" 
+							th:errorClass="'alert-danger'" id="impresionTypeC" name="tipo" value="Color" >
+							<label for="impresionTypeC" class="mr-3" >Color</label>
+							<input type=radio th:field="*{tipoImpresion}" 
+							th:errorClass="'alert-danger'" id="impresionTypeByN" name="tipo" value="BlancoNegro">
+							<label for="impresionTypeByN">Blanco y Negro</label>
+							<small
+								class=" d-block text-danger"
+								th:if="${#fields.hasErrors('tipoImpresion')}" th:errors="*{tipoImpresion}">
+							</small>
+						</div>
+						
+					</div>
+					
+					
+					
+
+					<div class="form-group d-flex flex-column w-100">
+						<label class="bg-primary text-center titulo-pedido">Seleccione su archivo</label>
+						 <div class="impersionType-container pt-5 w-100">
+							<label for="archivo" class="d-block">Añade un archivo a imprimir:</label>
+							<div class="">
+							<input type="file" name="archivo" id="archivo" class="form-control" accept="application/pdf"/>
+							</div>
+						
+    					</div>					
+
+					</div>
+										
+					
+					
+
+
+					<div class="form-group d-flex flex-column w-100">
+						<label class=" bg-primary text-center titulo-pedido ">Añade una nota o descripción</label>
+						<div class="impersionType-container pt-5 w-100">
+							<label for="comentario" class="d-block">Descripción o nota de tu impresión:</label>
+							<input type="text" th:field="*{descripcionImpresion}" id="comentario" placeholder="Descripcion" 
+							name="comentario" th:errorClass="'alert-danger'" class="border rounded textField" />
+							<small
+								class="text-danger"
+								th:if="${#fields.hasErrors('descripcionImpresion')}" th:errors="*{descripcionImpresion}">
+							</small>
+						</div>
+
+					</div>
+
+
+
+
+
+					<div class="form-group d-flex flex-column w-100">
+						<label class=" bg-primary text-center titulo-pedido ">Total a pagar:</label>
+						<div class="impersionType-container pt-5 w-100">
+							<p id="totalPagar" class="totalPago">El pedido es de $******* MXN.</p>
+							
+							<input type="hidden" th:field="*{precioTotal}"  name="precio" id="precio"/>
+							<small
+								class="text-danger"
+								th:if="${#fields.hasErrors('precioTotal')}" th:errors="*{precioTotal}">
+							</small>
+						</div>
+						
+
+					</div>
+					
+					
+
+					<div class="form-group d-flex flex-column w-100">
+						<label class=" bg-primary text-center titulo-pedido ">Forma de pago</label>
+						<div class="impersionType-container pt-5 w-100" id="headingTwo">
+							<input type="radio" th:field="*{metodoPago}" 
+							th:errorClass="'alert-danger'" id="pagoTypeE" name="pago" value="efectivo">
+							<label for="pagoTypeE" class="metodoPago text-md-center">Efectivo</label>
+							
+							
+							<input type="radio" th:field="*{metodoPago}" 
+							th:errorClass="'alert-danger'" id="pagoTypeT" name="pago" value="tarjeta">
+							<label for="pagoTypeT" class="metodoPago text-md-center">Tarjeta de Credito</label>
+							
+							<small
+								class="d-block text-danger"
+								th:if="${#fields.hasErrors('metodoPago')}" th:errors="*{metodoPago}">
+							</small>
+						</div>
+												
+					</div>
+					<div class="mt-2 text-center" id="collapse">
+    							<!-- Set up a container element for the button -->
+    							<div id="paypal-button-container"></div>
+    							<input type="hidden" name="dato" id="dato"/>
+  							</div>	
+					
+					
+					
+					
+					<div class="form-group d-flex justify-content-center">
+							<button type="submit" id="realizaPedido" class="btn btn-lg btn-secondary">Solicitar ahora</button>
+							
+					</div>
+					
+				</form>				
+			</div>
+		</div>
+	</section>
+	<footer th:replace="layout/layout :: footer" class="footer"></footer>
+</body>
+<!-- Include the PayPal JavaScript SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AeFUPN_SEp6ehJL3sVbcikIJJ-sF6qutn-jEgQdzg8qaemROIOc_R7bKckkYsEQV9NBHNVw3ebA8_pYu&currency=MXN"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script th:replace="../static/js/scriptPedido :: javascriptPedido"></script>
+	
+
+</html>

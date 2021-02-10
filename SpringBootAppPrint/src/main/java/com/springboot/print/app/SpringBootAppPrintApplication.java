@@ -1,6 +1,7 @@
 package com.springboot.print.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +13,12 @@ import com.springboot.print.app.service.IUploadFileService;
 public class SpringBootAppPrintApplication implements CommandLineRunner {
 	
 	@Autowired
+	@Qualifier("Imagenes")
 	private IUploadFileService uploadFileService;
+	
+	@Autowired
+	@Qualifier("Documentos")//EL QUALIFIER SIRVE CUANDO DOS CLASES OCUPAN UN SOLO INTERFAZ DE SERVICIO AL MISMO TIEMPO
+	private IUploadFileService documentsFileService;
 	
 	//Con esto encriptamos las  contraseñas
 	@Autowired
@@ -25,6 +31,11 @@ public class SpringBootAppPrintApplication implements CommandLineRunner {
 		
 		//Creamos la carpeta de los archivos
 		uploadFileService.init();
+		
+		
+		documentsFileService.deleteAll();
+		
+		documentsFileService.init();
 	
 		
 		

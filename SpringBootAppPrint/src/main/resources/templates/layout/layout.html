@@ -21,7 +21,7 @@
 		<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top mb-2">
 			
 				<div class="container">
-				<a class="navbar-brand" href="#">
+				<a class="navbar-brand" th:href="@{/home}">
 					<img th:src="@{/image/Logo2.png}" alt="Logo" width= "120"class="img-fluid mx-1 my-0">
 				</a>
 				
@@ -40,7 +40,11 @@
 						</li>
 
 						<li class="nav-item">
-							<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/home}">Imprimir</a>
+							<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/imprimir}">Imprimir</a>
+						</li>
+						
+						<li class="nav-item">
+							<a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/imprimir}">Admin Imprimir</a>
 						</li>
 
 						<li class="nav-item">
@@ -129,7 +133,7 @@
 					</div>
 
 					<div class="col-12 col-md-6 order-md-1 d-flex justify-content-center justify-content-md-start m-0" >
-						<img th:src="@{/image/Logotipo.png}" alt="Logo"  width="180"  class="img-fluid">
+						<img th:src="@{/image/Logotipo.png}" alt="Logo"  width="200"  class="img-fluid">
 					</div>
 				</div>
 
@@ -139,6 +143,7 @@
 		<script th:src="@{/js/popper.min.js}"></script>		
 		<script th:src="@{/js/bootstrap.min.js}"></script>
 		<script th:src="@{/js/jquery-ui.min.js}"></script>
+		
 	</footer>
 
 </body>

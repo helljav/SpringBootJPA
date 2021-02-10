@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+
+    <script th:inline="javascript" type="text/javascript" th:fragment="javascriptPedido">
+    
+    /*
+    var costoTotal = 0.0;
+	var count = 0;
+	var color_archivo = '';
+	var forma_pago = '';*/
+    
+    	//Objeto peddido para guardar todas las cacteristicas del pedido
+    	var pedido = {
+    			costoTotal: 0.0,
+    			paginas: 0,
+    			colorArchivo: "",
+    			metodoPago: "",
+    			descripcion: ""
+    	}
+        const formulario_registrar_pedido = document.querySelector('#form-pedido');
+	
+		/********VALIDACION DE TAMAÑO Y TIPO DE ARCHIVO*********/
+		var fileNameAux = '';
+		const costo = document.querySelector('#totalPagar');
+		var collaps = document.getElementById('collapseExample');
+		
+		/**DATOS DOCUMENTO**/
+		
+		
+			$(document).ready(function(){				 
+	             $('#pagoTypeE').prop('checked',false);
+	             $('#pagoTypeT').prop('checked',false);
+	             $('#impresionTypeC').prop('checked',false);
+	             $('#impresionTypeByN').prop('checked',false);
+	             $('#comentario').val('');
+	             $('#precio').val('');
+	             costo.innerHTML= "El pedido es de $********MXN.";
+	             $("#pagoTypeT").attr('disabled', false);
+				 $("#pagoTypeE").attr('disabled', false);
+	        	 fileNameAux = '';
+	                
+			});
+		
+			$(document).on('change','input[type="file"]',function(){
+				if(this.files[0]){
+				fileName = this.files[0].name;
+				fileSize = this.files[0].size;
+				
+				fileNameAux = fileName;
+			
+				if(fileSize > 15000000){
+					Swal.fire({
+						icon: 'error',
+						title: 'Error!',
+						text:'El archivo no puede exceder de 15MB!',
+						});
+					this.value = '';
+					this.files[0].name = '';
+				}else{
+					if(fileSize > 7000000){
+						$("#pagoTypeE").attr('disabled', true);
+						$("#realizaPedido").attr('disabled', true);
+						Swal.fire({
+							icon: 'warning',
+							title: 'Advertencia!',
+							text:'No puedes pagar en efectivo este archivo. Tienes que pagar con tarjeta!',
+							});
+					}else{
+						$("#pagoTypeE").attr('disabled', false);
+					}
+					// recuperamos la extensión del archivo
+					var ext = fileName.split('.').pop();
+					
+					// Convertimos en minúscula porque 
+					// la extensión del archivo puede estar en mayúscula
+					ext = ext.toLowerCase();
+				
+					// console.log(ext);
+					switch (ext) {
+						case 'pdf':
+							var reader = new FileReader();
+						
+							reader.readAsBinaryString(this.files[0]);
+							reader.onloadend = function(){
+								
+								try{
+									pedido.paginas = reader.result.match(/\/Type[\s]*\/Page[^s]/g).length;								
+									console.log('Número de páginas del pdf:',pedido.paginas );
+									if(pedido.colorArchivo === 'Color'){
+										pedido.costoTotal = 2*pedido.paginas;
+									}
+									if(pedido.colorArchivo === 'BlancoNegro'){
+										pedido.costoTotal = .5*pedido.paginas;
+									}
+									costo.innerHTML= "El pedido es de $"+pedido.costoTotal.toString()+"MXN.";
+									$('#precio').val(pedido.costoTotal);
+								}catch(error){
+									 $('input[type=file]')[0].files[0].name = '';
+						             $('input[type=file]')[0].value = ''; // reset del valor
+									Swal.fire({
+										icon: 'error',
+										title: 'Error!',
+										text:'El archivo no se pudo leer :(',
+										});									
+								}
+								
+								
+							}
+							
+							break;
+						default:
+							alert('El archivo no tiene la extensión adecuada');
+							this.files[0].name = '';
+							this.value = ''; // reset del valor
+					}
+				}
+				}else{
+					pedido.costoTotal = 0.0;
+					costo.innerHTML= "El pedido es de $********MXN.";
+					$('#precio').val(pedido.costoTotal);
+				}
+			});
+									
+									
+									
+									
+			//CADA VEZ QUE SE CAMBIA LA OPCION EN LOS RADIOS DEL COLOR
+			$("input[type='radio']").change(function () {	 
+				pedido.colorArchivo = $(this).val();
+				console.log(pedido.colorArchivo);
+				if(pedido.paginas !== 0){
+					if(pedido.colorArchivo === 'Color'){
+						pedido.costoTotal = 2*pedido.paginas;
+					}
+					if(pedido.colorArchivo === 'BlancoNegro'){
+						pedido.costoTotal = .5*pedido.paginas;
+					}
+					costo.innerHTML= "El pedido es de $"+pedido.costoTotal.toString()+"MXN.";
+					$('#precio').val(pedido.costoTotal);
+				}else{
+					costo.innerHTML= "El pedido es de $********MXN.";
+					
+
+				}
+				});
+		
+		  
+		
+		$("input[name=pago]").change(function () {
+			if($('#pagoTypeE').is(':checked')) {
+				pedido.metodoPago = $("input[name=pago]").val();
+    			console.log(pedido.metodoPago);
+    		
+			}
+			else if($('#pagoTypeT').is(':checked')){
+				pedido.metodoPago = $("input[name=pago]").val();
+				
+				
+    			console.log(pedido.metodoPago);
+				
+			}
+			
+		});
+		
+		
+		
+		$("#pagoTypeE").click(function() {
+			$("#collapse").hide(1500);
+			});	
+		
+		$("#pagoTypeT").click(function() {
+			$("#collapse").show("slow");
+			});	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*********************************** PAYPAL *********************************************************/
+		 // Render the PayPal button into #paypal-button-container
+   		 paypal.Buttons({
+   			 env:'sandbox',
+   			 
+		style:{
+			layout: 'vertical',
+			label: 'checkout',
+			size: 'responsive',
+			shape: 'pill',
+			color: 'gold'			
+		}, 
+        // Set up the transaction
+        createOrder: function(data, actions) {
+        	if(pedido.costoTotal!=0){
+        		var regreso = actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: pedido.costoTotal 
+                        }
+                    }]
+                });        		
+        	}
+        	else{
+        		Swal.fire({
+					icon: 'error',
+					title: 'Error!',
+					text:'No se puede ejecutar el pago. Verifique su pedido',
+					});	
+        	}
+            
+            console.log(pedido)
+            return regreso
+        },
+
+        // Finalize the transaction
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+            	console.log(details);
+                // Show a success message to the buyer
+                Swal.fire({
+					icon: 'success',
+					title: 'Pago realizado by '+ details.payer.name.given_name ,
+					text:'Su pago y pedido fueron registrados',
+					});
+                
+                //Mandamos al backend si el pago fue realizado
+                $('#dato').val(details.status);
+                
+                //Al completarse el pago se realiza el submit para la compra
+                $('#form-pedido').submit();
+                
+                
+            });
+        }
+
+
+   	}).render('#paypal-button-container');  
+		
+
+    </script>
+
+</body>
+</html>

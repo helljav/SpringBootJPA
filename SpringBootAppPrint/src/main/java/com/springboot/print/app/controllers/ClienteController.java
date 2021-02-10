@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,8 +63,13 @@ public class ClienteController {
 			Cliente cliente = new Cliente();
 			model.put("cliente", cliente);
 			model.put("titulo", messageSource.getMessage("text.cliente.form.titulo.crear", null, locale));
-			log.info(cliente.toString());
 			return "newUser";
+		}
+		
+		
+		
+		public Cliente mostrarUsuarioByUsername(String username) {
+			return clienteService.findByusername(username);
 		}
 		
 		
@@ -72,7 +78,7 @@ public class ClienteController {
 		public String guardar(@Valid Cliente cliente, BindingResult result, Model model,
 				@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status, Locale locale) {
 			
-			
+			log.info(cliente.toString());
 			if (result.hasErrors()) {
 				model.addAttribute("titulo", messageSource.getMessage("text.cliente.form.titulo", null, locale));
 				log.info(result.getAllErrors().toString());
