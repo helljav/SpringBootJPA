@@ -5,3 +5,7 @@ INSERT INTO db_app_print.clientes (matricula, email, username, password, photo, 
 INSERT INTO `authorities` (user_id, authority)  VALUES (1, 'ROLE_USER');
 INSERT INTO `authorities` (user_id, authority)  VALUES (2, 'ROLE_USER');
 INSERT INTO `authorities` (user_id, authority)  VALUES (2, 'ROLE_ADMIN');
+
+
+
+

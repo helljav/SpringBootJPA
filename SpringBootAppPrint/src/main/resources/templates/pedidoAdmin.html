@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+	
+</head>
+<head>
+	<link rel="stylesheet"  th:href="@{/css/pedido.css}">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	
+	<section id="listar">
+		<div class="container mt-3 py-4">
+			<div class="row">
+					<div class="card-body">
+					<h5  class="card-tittle pb-3">Lista de pedidos pendientes</h5>
+					
+						<table class=" table table-striped table-bordered">
+							<thead class="thead-inverse">
+								<tr>
+									<th sec:authorize="hasRole('ROLE_USER')">Numero de pedido</th>
+									<th>Cliente</th>
+									<th>Color de la impresion</th>
+									<th>Metodo de pago</th>
+									<th>Precio total</th>
+									<th sec:authorize="hasRole('ROLE_ADMIN')">Descargar archivo</th>
+									<th sec:authorize="hasRole('ROLE_ADMIN')">Eliminar archivo</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="pedido: ${pedidos}">
+									<td sec:authorize="hasRole('ROLE_USER')"><a class="btn btn-primary btn-xs" 
+									th:text="${pedido.id}"></a></td>
+									
+									<td th:text="${nombreUsuario}" ></td>
+									<td th:text="${pedido.tipoImpresion}"></td>
+									<td th:text="${pedido.metodoPago}"></td>
+									<td th:text="${pedido.precioTotal}"></td>
+															
+									<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-success btn-xs"
+										th:href="@{'/descargaPDF/' + ${pedido.id}}">Descargar</a></td>
+									<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-danger btn-xs"
+										th:href="@{/eliminar/} + ${pedido.id}" 
+										onclick="return confirm(document.getElementById('i18n_eliminar_pedido').innerHTML);">Eliminar</a></td>
+								</tr>
+							</tbody>
+		
+						</table>
+						<nav th:replace="paginator-nav :: paginator"></nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</section>
+	
+	
+	
+	
+	
+	<footer th:replace="layout/layout :: footer" class="footer"></footer>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+	
+
+</html>

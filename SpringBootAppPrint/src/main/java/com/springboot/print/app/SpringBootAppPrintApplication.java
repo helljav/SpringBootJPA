@@ -26,16 +26,10 @@ public class SpringBootAppPrintApplication implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		//Borramos la carpeta de los archivos
-		uploadFileService.deleteAll();
-		
-		//Creamos la carpeta de los archivos
-		uploadFileService.init();
 		
 		
-		documentsFileService.deleteAll();
 		
-		documentsFileService.init();
+		
 	
 		
 		

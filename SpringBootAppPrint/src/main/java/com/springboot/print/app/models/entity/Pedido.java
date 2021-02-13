@@ -1,5 +1,6 @@
 package com.springboot.print.app.models.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -55,8 +58,7 @@ public class Pedido {
 		private Double precioTotal;
 		
 		//Muchos pedidos, un cliente
-		@ManyToOne(fetch=FetchType.LAZY)
-		//@JsonBackReference //El fetch tipo lazy es el causante del ciclo, y con esto lo evitamos 
+		@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL) 
 		private Cliente cliente;
 		
 		
